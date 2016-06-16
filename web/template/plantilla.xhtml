@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+   <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="default.css"/>
+        <title><ui:insert name="title">Oriflame v1.0</ui:insert></title>
+    </h:head>
+    <h:body style="padding: 10px" >
+        <ui:insert name="dialogs" />
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="45">
+                <h:graphicImage library="img" name="enviar3.jpg" style="height: 32px; width: 32px;float: left" />
+                <h1 style="margin-top: 8px;padding-left: 35px;" >
+                    <ui:insert name="header">default application header</ui:insert>
+                </h1>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="30">
+                <ui:insert name="footer" >
+                    <h:outputText value="content-footer" />
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" collapsible="true" closable="true" >
+                <f:facet name="header">
+                    <ui:insert name="header-content-left" >
+                        <h:outputText value="header panel izquierdo" />
+                    </ui:insert>
+                </f:facet>
+                <ui:insert name="content-left" >
+                    <h:outputText value="contenido panel izquierdo" />  
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <f:facet name="header" >
+                    <ui:insert name="header-content-center" >
+                        <h:outputText value="header content center" />
+                    </ui:insert>
+                </f:facet>
+                <ui:insert name="content-center" >
+                    <h:outputText value="header content center" />
+                </ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>

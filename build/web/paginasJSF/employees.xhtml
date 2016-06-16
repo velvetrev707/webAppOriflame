@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/Template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="top">
+        Formulario para Ingreso de Empleados    
+    </ui:define>
+
+    <ui:define name="content">    
+
+        <h:form id="dataForm">
+            <p:growl id="globalMessages" showSummary="true" showDetail="true" globalOnly="true" />
+            
+            <p:panel header="Ingreso de Informacion">
+            <h:panelGrid style="margin-left: 50px" columns="3">
+                <h:outputLabel value="Codigo:"/>
+                <p:inputText value="#{empleadosController.empleado.idempl}" id="txtIdEmpleado" style="width: 75px;"/>
+                <p:message for="txtIdEmpleado"/> 
+
+                <h:outputLabel value="Nombre:"/>
+                <p:inputText value="#{empleadosController.empleado.nombEmpl}" id="txtnombEmpleado" style="width: 300px;text-transform:uppercase;"
+                             onkeyup="javascript:this.value = this.value.toUpperCase();"/>
+                <p:message for="txtnombEmpleado"/> 
+
+                <h:outputLabel value="Direccion:"/>
+                <p:inputText value="#{empleadosController.empleado.direcEmpl}" id="txtdirecEmpleado" 
+                             style="text-transform:uppercase;width: 520px;"
+                             onkeyup="javascript:this.value = this.value.toUpperCase();"/>
+                <p:message for="txtdirecEmpleado"/>
+
+                <h:outputLabel value="Telefono:"/>
+                <p:inputMask mask="9999-9999" value="#{empleadosController.empleado.telEmpl}" id="txtTelEmpleado" style="width: 100px;"/>
+                <p:message for="txtTelEmpleado"/>
+
+                <h:outputLabel value="Fecha Nacimiento:"/>
+                <p:calendar id="fecnac" showOn="button" pattern="dd/MM/yyyy" mask="true" value="#{empleadosController.empleado.fecnacEmpl}"/>
+                <p:message for="fecnac"/>
+
+                <h:outputLabel value="Email:"/>
+                <p:inputText value="#{empleadosController.empleado.emailEmpl}" id="txtEmailEmpl" style="text-transform:lowercase;width: 300px;"
+                             onkeyup="javascript:this.value = this.value.toLowerCase();"/>
+                <p:message for="txtEmailEmpl"/> 
+
+                <h:outputLabel value="Sexo" />
+                <h:panelGroup>
+                    <p:selectOneRadio id="rdSexo" value="#{empleadosController.empleado.sexo}" >
+                        <f:selectItem itemLabel="Masculino" itemValue="M" />
+                        <f:selectItem itemLabel="Femenino" itemValue="F" />
+                    </p:selectOneRadio>
+                </h:panelGroup>
+
+                <h:panelGrid style="margin-top:-110px;margin-left: -360px;margin-right: 5px;margin-bottom: 10px" columns="2" >
+                    <h:outputLabel style="display: block;width: 125px;" value="Departamento:" />
+                    <p:selectOneMenu  style="width: 200px" value="#{empleadosController.empleado.muniRes.iddepto.iddepto}">
+                        <f:selectItems value="#{empleadosController.deptos}" var="depto"
+                                       itemLabel="#{depto.nombDepto}" itemValue="#{depto.iddepto}"/>
+                        <p:ajax update="lstMunic" />
+                    </p:selectOneMenu>
+
+                    <h:outputLabel style="display: block;width: 125px;" value="Municipio:" />
+                    <p:selectOneMenu id="lstMunic" style="width: 200px" value="#{empleadosController.empleado.muniRes.idmunicipio}"  >
+                        <f:selectItems value="#{empleadosController.municipios}" var="munic"
+                                       itemLabel="#{munic.nombMunicipio}" itemValue="#{munic.idmunicipio}"/>
+                    </p:selectOneMenu>               
+                </h:panelGrid>
+                <p:message for="rdSexo" />
+
+                <h:panelGroup > 
+                    <p:commandButton value="Guardar" 
+                                     update="@form globalMessages frmEmpleados:dtEmpleados" oncomplete="PF('cd').hide()"                          
+                                     action="#{empleadosController.createEmpleados()}" 
+                                     actionListener="#{empleadosController.findAllEmpleados()}"
+                                     icon="ui-icon-disk" 
+                                     />
+                    <p:commandButton value="Modificar"
+                                     update="@form globalMessages frmEmpleados:dtEmpleados" oncomplete="PF('cd').hide()" 
+                                     action="#{empleadosController.updateEmpleados()}" 
+                                     actionListener="#{empleadosController.findAllEmpleados()}"
+                                     icon="ui-icon-refresh"
+                                     />
+                    <p:commandButton value="Nuevo Empleado" icon="ui-icon-document" actionListener="#{empleadosController.clearForm()}"
+                                     update="dataForm">      
+                    </p:commandButton>
+                </h:panelGroup>
+            </h:panelGrid>    
+            </p:panel>
+        </h:form>   
+
+
+        <h:form id="frmEmpleados">
+            <p:panel header="Lista de Empleados">
+            <p:dataTable id="dtEmpleados" var="empleado" value="#{empleadosController.empleados}" paginator="true"
+                         rows="5"  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
+                         {CurrentPageReport} {NextPageLink} {LastPageLink}" rowsPerPageTemplate="2,3,5,6,7,8,9,10"
+                         style="text-align: left;" resizableColumns="true"
+                         styleClass="datatable">
+
+                <p:column headerText="Codigo" filterBy="#{empleado.idempl}" sortBy="#{empleado.idempl}" width="50">
+                    <h:outputText value="#{empleado.idempl}"/>
+                </p:column>
+
+                <p:column headerText="Nombre" filterBy="#{empleado.nombEmpl}" sortBy="#{empleado.nombEmpl}" width="200">
+                    <h:outputText value="#{empleado.nombEmpl}"/>
+                </p:column>  
+
+                <p:column headerText="Direccion" filterBy="#{empleado.direcEmpl}" sortBy="#{empleado.direcEmpl}" width="300">
+                    <h:outputText value="#{empleado.direcEmpl}"/>
+                </p:column>
+
+                <p:column headerText="Telefono" filterBy="#{empleado.telEmpl}" sortBy="#{empleado.telEmpl}" width="75">
+                    <h:outputText value="#{empleado.telEmpl}"/>
+                </p:column>
+
+                <p:column headerText="Fec. Nacimiento" filterBy="#{empleado.fecnacEmpl}" 
+                          sortBy="#{empleado.fecnacEmpl}" width="75">
+                    <h:outputText value="#{empleado.fecnacEmpl}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>               
+                </p:column>  
+
+                <p:column headerText="Correo" filterBy="#{empleado.emailEmpl}" sortBy="#{empleado.emailEmpl}" width="150">
+                    <h:outputText value="#{empleado.emailEmpl}"/>
+                </p:column>           
+
+                <p:column headerText="Municipio Residencia" filterBy="#{empleado.muniRes.nombMunicipio}" sortBy="#{empleado.muniRes.nombMunicipio}" width="100">
+                    <h:outputText value="#{empleado.muniRes.nombMunicipio}"/>
+                </p:column>
+                
+                <p:column headerText="Departamento Residencia" filterBy="#{empleado.muniRes.iddepto.nombDepto}" sortBy="#{empleado.muniRes.iddepto.nombDepto}" width="100">
+                    <h:outputText value="#{empleado.muniRes.iddepto.nombDepto}"/>
+                </p:column>
+
+                <p:column headerText="Sexo" filterBy="#{empleado.sexo}" sortBy="#{empleado.sexo}" width="40">
+                    <h:outputText value="#{empleado.sexo}"/>
+                </p:column>
+
+                <p:column headerText="Seleccionar" width="140">
+                    <p:commandButton icon="ui-icon-circle-check" value="Selecionar" update="dataForm"
+                                     actionListener="#{empleadosController.editMode()}" >
+                        <f:setPropertyActionListener value="#{empleado}" 
+                                                     target="#{empleadosController.empleado}" />
+                    </p:commandButton>
+                </p:column>
+                <p:column headerText="Eliminar" width="120" >
+                    <p:commandButton icon="ui-icon-circle-minus" value="Eliminar" oncomplete="PF('cd').show()">
+                        <f:setPropertyActionListener value="#{empleado}" 
+                                                     target="#{empleadosController.empleado}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            </p:panel>
+        </h:form>
+
+
+
+        <p:confirmDialog message="Esta seguro que desea eliminar el registro seleccionado?"
+                         header="Eliminar Cliente" severity="alert" 
+                         widgetVar="cd">
+            <h:form>
+                <p:growl id="globalMessages" showSummary="true" showDetail="true" globalOnly="true" />
+                <p:commandButton value="Aceptar" actionListener="#{empleadosController.deleteEmpleados()}" 
+                                 update="globalMessages frmEmpleados:dtEmpleados" oncomplete="PF('cd').hide()"
+                                 action="#{empleadosController.findAllEmpleados()}"/>                
+                <p:commandButton value="No" onclick="PF('cd').hide();" type="button" />
+            </h:form>
+        </p:confirmDialog>
+    </ui:define>
+
+
+
+    <ui:define name="bottom">
+        <p:panel>
+            <p:outputLabel value="Derechos Reservados Oriflame #{clienteController.vyear}"/>
+        </p:panel>
+    </ui:define>
+</ui:composition>

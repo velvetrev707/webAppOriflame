@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+   <head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Vista de Menus del Sistema Oriflame</title>
+<link href="oriflame/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="header">
+		<div id="logo">
+			<h1><a href="#">SISTEMA ORIFLAME</a></h1>
+		</div>
+		<!--
+		<div id="search">
+			<form method="get" action="">
+				<fieldset>
+					<input type="text" name="s" id="search-text" size="15" value="enter keywords here..." />
+					<input type="submit" id="search-submit" value="GO" />
+				</fieldset>
+			</form>
+		</div>
+		-->
+	</div>
+	<div id="menu">
+		<ul>
+			<li class="current_page_item"><span><a href="http://localhost:8080/webAppOriflame/faces/paginasJSF/clientes.xhtml">Clientes</a></span></li>
+			<li><a href="http://localhost:8080/webAppOriflame/faces/paginasJSF/employees.xhtml">Empleados</a></li>
+			<li><a href="#">Facturacion</a></li>
+			<li><a href="#">Productos</a></li>
+			<li><a href="#">Categorias</a></li>
+			<li><a href="#">Marcas</a></li>			
+		</ul>
+	</div>
+	<!-- end #menu -->
+	<div id="splash"><img src="oriflame/images/oriflam.jpg" width="1167" height="444" alt="" /></div>
+	<!-- end #header -->
+	</div>
+<div id="footer">	
+    <p>   <p:outputLabel value="Copyright  #{clienteController.vyear}  .Diseñado por  "/> <a href="http://www.oriflame.com.sv//"> Oriflame</a> </p>
+</div>
+</body>
+</html>
+

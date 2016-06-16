@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/plantilla.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <ui:define name="title">
+        Clientes
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <p:dialog header="Busqueda de Clientes" widgetVar="dlg" resizable="false"
+                  hideEffect="explode" showEffect="fade" width="1300" >
+            <h:form id="frmClientes">
+                <p:dataTable id="tblClientes" var="cliente" value="#{clienteController.clientes}" paginator="true" rows="5"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
+                             {CurrentPageReport} {NextPageLink} {LastPageLink}" rowsPerPageTemplate="2,3,5,6,7,8,9,10"
+                             style="text-align: left;" resizableColumns="true"
+                             styleClass="datatable">
+                    <p:column headerText="Nombre" filterBy="#{cliente.nomcliente}" sortBy="#{cliente.nomcliente}" width="300">
+                        <h:outputText value="#{cliente.nomcliente}" />
+                    </p:column>
+                    <p:column headerText="DUI" filterBy="#{cliente.duicliente}" sortBy="#{cliente.duicliente}" width="90">
+                        <h:outputText value="#{cliente.duicliente}" />
+                    </p:column>
+                    <p:column headerText="Direccion" filterBy="#{cliente.direccliente}" sortBy="#{cliente.direccliente}" width="350">
+                        <h:outputText value="#{cliente.direccliente}" />
+                    </p:column>
+                    <p:column headerText="Fecha Nacimiento" filterBy="#{cliente.fecnacClient}" filterMatchMode="contains" 
+                              sortBy="#{cliente.fecnacClient}" width="90" >
+                        <h:outputText value="#{cliente.fecnacClient}">
+                             <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Telefono" filterBy="#{cliente.telCliente}" filterMatchMode="contains" 
+                              sortBy="#{cliente.telCliente}" width="90">
+                        <h:outputText value="#{cliente.telCliente}"  />
+                    </p:column>
+                    <p:column headerText="Email" filterBy="#{cliente.emailClient}" filterMatchMode="contains" sortBy="#{cliente.emailClient}" width="300">
+                        <h:outputText value="#{cliente.emailClient}" />
+                    </p:column>
+                    <p:column headerText="Seleccionar" width="140">
+                        <p:commandButton icon="ui-icon-circle-check" value="Selecionar" update="dataForm" oncomplete="PF('dlg').hide()"
+                                         actionListener="#{clienteController.editMode()}" >
+                            <f:setPropertyActionListener value="#{cliente}" 
+                                                         target="#{clienteController.cliente}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Eliminar" width="120" >
+                        <p:commandButton icon="ui-icon-circle-minus" value="Eliminar" oncomplete="PF('cd').show()">
+                            <f:setPropertyActionListener value="#{cliente}" 
+                                                         target="#{clienteController.cliente}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+
+            </h:form>
+        </p:dialog>
+
+
+        <p:confirmDialog message="Esta seguro que desea eliminar el registro seleccionado?"
+                         header="Eliminar Cliente" severity="alert" 
+                         widgetVar="cd">
+            <h:form>
+                <p:growl id="globalMessages" showSummary="true" showDetail="true" globalOnly="true" />
+                <p:commandButton value="Aceptar" actionListener="#{clienteController.deleteClientes()}" 
+                                 update="globalMessages frmClientes:tblClientes" oncomplete="PF('cd').hide()"/>
+                <p:commandButton value="No" onclick="PF('cd').hide();" type="button" />
+            </h:form>
+        </p:confirmDialog>
+
+    </ui:define>
+
+    <ui:define name="header">
+        Clientes
+    </ui:define>
+
+    <ui:define name="footer">
+        <p:outputLabel value="Derechos Reservados Oriflame #{clienteController.vyear}"/>
+    </ui:define>
+
+    <ui:define name="header-content-left">
+        <h:outputLabel style="font-weight: bold" value="Tareas comunes" />
+    </ui:define>
+
+    <ui:define name="content-left">
+        <h:form>
+            <p:panelMenu>
+                <p:submenu label="Clientes">
+                    <p:menuitem value="Nuevo Cliente" icon="ui-icon-document" actionListener="#{clienteController.inicializar()}"
+                                update="dataForm" />
+                    <p:menuitem value="Buscar Cliente" icon="ui-icon-search" update="frmClientes:tblClientes" action="#{clienteController.findAllClientes()}"
+                                oncomplete="PF('dlg').show()" />
+                </p:submenu>
+            </p:panelMenu>
+        </h:form>
+    </ui:define>
+
+
+
+    <ui:define name="header-content-center">
+        <h:outputLabel style="font-weight: bold" value="Formulario para Ingreso de Clientes" />
+    </ui:define>
+
+    <ui:define name="content-center">
+        <h:form id="dataForm" >
+            <p:panel>
+                <p:growl id="globalMessages" showSummary="true" showDetail="true" globalOnly="true" />
+                <h1 style="padding: 10px;font-size: 12px" >Informacion Personal de los Clientes</h1>
+
+                <h:panelGrid style="margin-left: 10px" columns="3" >
+                    <h:outputLabel style="display: block;width: 75px;" value="Codigo: " />
+                    <p:inputText id="txCodCliente" style="width: 100px;" 
+                                 required="true"
+                                 requiredMessage="Digite el C&oacute;digo"
+                                 value="#{clienteController.cliente.idcliente}" />
+                    <p:message for="txCodCliente" />
+
+                    <h:outputLabel style="display: block;width: 75px;" value="Dui:" />
+                    <p:inputMask id="txtDui" mask="99999999-9" style="width: 100px" value="#{clienteController.cliente.duicliente}"/>
+                    <p:message for="txtDui"/>
+
+                    <h:outputLabel style="display: block;width: 75px;" value="Nombre:" />
+                    <p:inputText id="txtNomCliente"  value="#{clienteController.cliente.nomcliente}" style="text-transform:uppercase;width: 500px" 
+                                 onkeyup="javascript:this.value = this.value.toUpperCase();" styleClass="text-input"/>
+                    <p:message for="txtNomCliente"/>
+
+                    <h:outputLabel style="display: block;width: 75px;" value="Direccion:" />
+                    <p:inputText id="txtDirecCliente" style="text-transform:uppercase;width: 700px" value="#{clienteController.cliente.direccliente}" 
+                                 onkeyup="javascript:this.value = this.value.toUpperCase();" styleClass="text-input"/>
+                    <p:message for="txtDirecCliente"/>
+
+                    <h:outputLabel value="Fecha de nacimiento:" />
+                    <p:calendar style="width: 300px" value="#{clienteController.cliente.fecnacClient}" 
+                                showOn="button" pattern="dd/MM/yyyy" mask="true" id="calFecNac"/>
+                    <p:message for="calFecNac"/>
+
+                    <h:outputLabel style="display: block;width: 75px;" value="Telefono:" />
+                    <p:inputMask  id="txtTelCliente" mask="9999-9999" style="width: 100px" value="#{clienteController.cliente.telCliente}"/>
+                    <p:message for="txtTelCliente"/>
+
+                    <h:outputLabel style="display: block;width: 75px;" value="Email:" />
+                    <p:inputText id="txtEmailCli" style="width: 500px;text-transform:lowercase;" value="#{clienteController.cliente.emailClient}" 
+                                 onkeyup="javascript:this.value = this.value.toLowerCase();" styleClass="text-input"/>
+                    <p:message for="txtEmailCli"/>
+
+                    <h:panelGroup > 
+                        <p:commandButton value="Guardar" 
+                                         update="@form"
+                                         action="#{clienteController.guardarClientes()}" icon="ui-icon-disk" />
+                        <p:commandButton value="Modificar"
+                                         update="@form"
+                                         action="#{clienteController.updateClientes()}" icon="ui-icon-refresh"/>
+                    </h:panelGroup>
+                </h:panelGrid> 
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

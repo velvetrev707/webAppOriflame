@@ -1,0 +1,31 @@
+body {
+    background-color: #c2dfef;
+    font-size: 12px;
+    font: 12px/1.4 Helvetica,Arial,sans-serif;
+    color: #000000;  
+    margin: 10px;
+}
+
+*{
+  font: 12px/1.4 Helvetica,Arial,sans-serif;
+}
+h1 {
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #205081;
+}
+
+a:link, a:visited {
+    color: #045491;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: #045491;
+    font-weight : bold;
+    text-decoration : none;
+}
+
